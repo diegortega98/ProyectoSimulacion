@@ -1,0 +1,39 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+<h1>Análisis de resultados</h1>
+Para realizar el análisis de datos, vamos a comparar los datos obtenidos de la simulación para distintos porcentajes de enriquecimiento.
+```{r}
+#read data
+
+setwd("C:/Users/Diego/Documents/Materias/Simulación/Proyecto/dump")
+
+temp = list.files(pattern="*.csv")
+datos = lapply(temp, read.csv)
+
+```
+
+```{r}
+values<-c()
+values2<-c()
+values3<-c()
+tiempo<-c()
+for (i in 1:60) {
+temp2<-data.frame(datos[i])
+values<-append(values,mean(temp2[["V2"]]))
+values2<-append(values2,mean(temp2[["V1"]]))
+values3<-append(values3,max(temp2[["V1"]]))
+tiempo<-append(tiempo,sd(temp2[["V3"]]))
+}
+n<-60
+tabla<-data.frame("Enriquecimiento"=seq(1,n),"Criticidad"=values,"Neutrones fisionados"=values2,"tiempo"=tiempo,"Máxima criticidad"=values3) 
+print(tabla)
+plot(data.frame("Enriquecimiento"=seq(1,n),"Criticidad"=values) )
+plot(data.frame("Enriquecimiento"=seq(1,n),"Neutrones fisionados"=values2) )
+plot(data.frame("Enriquecimiento"=seq(1,n),"Máxima criticidad"=values3) )
+lines(seq(1,60), runif(60,0.4,0.4),col = "red")
+summary(tabla)
+```
+
